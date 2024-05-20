@@ -1,0 +1,109 @@
+openapi: 3.0.0
+info:
+  title: API de Imágenes Favoritas
+  description: API para gestionar imágenes favoritas.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8003
+    description: Servidor de desarrollo
+
+paths:
+  /favorite_images:
+    get:
+      summary: Obtener todas las imágenes favoritas
+      responses:
+        "200":
+          description: Un arreglo JSON de imágenes favoritas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    nombre:
+                      type: string
+                    url:
+                      type: string
+                    descripcion:
+                      type: string
+
+  /favorite_image/{id}:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Obtener una imagen favorita por ID
+      responses:
+        "200":
+          description: Un objeto de imagen favorita
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  nombre:
+                    type: string
+                  url:
+                    type: string
+                  descripcion:
+                    type: string
+        "404":
+          description: Imagen favorita no encontrada
+    put:
+      summary: Actualizar una imagen favorita por ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                url:
+                  type: string
+                descripcion:
+                  type: string
+      responses:
+        "200":
+          description: Imagen favorita actualizada exitosamente
+        "404":
+          description: Imagen favorita no encontrada
+    delete:
+      summary: Eliminar una imagen favorita por ID
+      responses:
+        "200":
+          description: Imagen favorita eliminada exitosamente
+        "404":
+          description: Imagen favorita no encontrada
+
+  /favorite_image:
+    post:
+      summary: Crear una nueva imagen favorita
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                url:
+                  type: string
+                descripcion:
+                  type: string
+      responses:
+        "201":
+          description: Imagen favorita creada exitosamente
+        "400":
+          description: Faltan datos en la solicitud
